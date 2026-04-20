@@ -9,7 +9,7 @@ order: 1
 
 你好！我是 **王雨晨 (Yuchen Wang)**。目前我是一名专注于 **数据中心网络 (Data Center Networks)** 研究的硕士研究生。
 
-我的研究工作主要聚焦于高性能网络协议的优化与安全。我在 **RDMA (Remote Direct Memory Access)** 的负载均衡与拥塞控制方面积累了相关经验,已发表一篇CCF-A类文章。目前，我正深入探索 **RDMA 网络安全** 以及基于 **可编程数据平面** 的高效能流量监测算法（Sketch 算法）。
+我的研究工作主要聚焦于高性能网络协议的优化与安全。我在 **RDMA (Remote Direct Memory Access)** 的负载均衡与拥塞控制方面积累了相关经验, 已发表一篇CCF-A类文章。目前，我正深入探索 **RDMA 网络安全** 以及基于 **可编程数据平面** 的高效能流量监测算法（Sketch 算法）。
 
 对我而言，这个网页不仅是学术成果的展示窗口，更是我**见证自己不断成长、做好技术分享**的地方。
 
@@ -28,14 +28,14 @@ order: 1
 
 > 💡 *学术交流请通过邮件联系，欢迎针对协议实现与算法细节进行探讨。*
 
-1. **R³: A Building Block for Disordering-Tolerant Load Balancing in Data Center Networks** Tao Zhang, **Yuchen Wang**, Yuanzhen Hu, Jinbin Hu, Haotian Jing, and Yangfan Li.
+1. **R³: A Building Block for Disordering-Tolerant Load Balancing in Data Center Networks.** Tao Zhang, **Yuchen Wang**, Yuanzhen Hu, Jinbin Hu, Haotian Jing, and Yangfan Li.
    *IEEE Transactions on Services Computing (**TSC**), 2025, 18(5): 3106-3122.* (**CCF-A**)
    [[Paper]](#) [[Code]](#)
 
-2. **Load Balancing With Proactive Traffic Separation in Data Center Network** Tao Zhang, Yujie Peng, Zhenbo Li, **Yuchen Wang**, Xidao Luan, Yunsheng Liu, Siyuan Fan, and Hui Yin.
+2. **Load Balancing With Proactive Traffic Separation in Data Center Network.** Tao Zhang, Yujie Peng, Zhenbo Li, **Yuchen Wang**, Xidao Luan, Yunsheng Liu, Siyuan Fan, and Hui Yin.
    *Journal of Network and Systems Management (**JNSM**), 2025, 33:73.* [[Paper]](#) [[Code]](#)
 
-3. **Leveraging Packet Cloning to Achieve Fast Flow-Transmission for Data Center Load Balancing** **Yuchen Wang**, Zhenbo Li, Haotian Jing, Tao Zhang, Shaojun Zou, Xidao Luan, Hui Yin, and Fangmin Li.
+3. **Leveraging Packet Cloning to Achieve Fast Flow-Transmission for Data Center Load Balancing.** **Yuchen Wang**, Zhenbo Li, Haotian Jing, Tao Zhang, Shaojun Zou, Xidao Luan, Hui Yin, and Fangmin Li.
    *2024 IEEE International Symposium on Parallel and Distributed Processing with Applications (**ISPA**), 2024.* [[Paper]](#) [[Slides]](#) [[Code]](#)
 
 ---
