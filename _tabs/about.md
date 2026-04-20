@@ -28,14 +28,14 @@ order: 1
 
 > 💡 *学术交流请通过邮件联系，欢迎针对协议实现与算法细节进行探讨。*
 
-1. **R³: A Building Block for Disordering-Tolerant Load Balancing in Data Center Networks.** Tao Zhang, **Yuchen Wang**, Yuanzhen Hu, Jinbin Hu, Haotian Jing, and Yangfan Li.
+1. **R³: A Building Block for Disordering-Tolerant Load Balancing in Data Center Networks.** Tao Zhang*, **Yuchen Wang**, Yuanzhen Hu, Jinbin Hu, Haotian Jing, and Yangfan Li.
    *IEEE Transactions on Services Computing (**TSC**), 2025, 18(5): 3106-3122.* (**CCF-A**)
    [[Paper]](#) [[Code]](#)
 
-2. **Load Balancing With Proactive Traffic Separation in Data Center Network.** Tao Zhang, Yujie Peng, Zhenbo Li, **Yuchen Wang**, Xidao Luan, Yunsheng Liu, Siyuan Fan, and Hui Yin.
+2. **Load Balancing With Proactive Traffic Separation in Data Center Network.** Tao Zhang*, Yujie Peng, Zhenbo Li, **Yuchen Wang**, Xidao Luan, Yunsheng Liu, Siyuan Fan, and Hui Yin.
    *Journal of Network and Systems Management (**JNSM**), 2025, 33:73.* [[Paper]](#) [[Code]](#)
 
-3. **Leveraging Packet Cloning to Achieve Fast Flow-Transmission for Data Center Load Balancing.** **Yuchen Wang**, Zhenbo Li, Haotian Jing, Tao Zhang, Shaojun Zou, Xidao Luan, Hui Yin, and Fangmin Li.
+3. **Leveraging Packet Cloning to Achieve Fast Flow-Transmission for Data Center Load Balancing.** **Yuchen Wang**, Zhenbo Li, Haotian Jing, Tao Zhang*, Shaojun Zou, Xidao Luan, Hui Yin, and Fangmin Li.
    *2024 IEEE International Symposium on Parallel and Distributed Processing with Applications (**ISPA**), 2024.* [[Paper]](#) [[Slides]](#) [[Code]](#)
 
 ---
