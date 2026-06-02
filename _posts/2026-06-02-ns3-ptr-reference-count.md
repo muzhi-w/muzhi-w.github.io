@@ -67,11 +67,32 @@ void InitQp(Ptr<RdmaQueuePair> qp,
 
 它们是在接入 ns-3 的对象生命周期体系。
 
+本文涉及的源码主要来自我当前使用的 ns-3.19 工作区：
+
+```text
+src/core/model/ptr.h
+src/core/model/simple-ref-count.h
+src/core/model/object.h
+src/core/model/object.cc
+src/network/model/packet.h
+src/point-to-point/model/rdma-hw.h
+src/point-to-point/model/rdma-hw.cc
+src/point-to-point/model/rdma-queue-pair.h
+```
+
+文中有些代码是源码摘录，有些是为了讲清楚机制而写的简化版。遇到简化版时，我会明确说明。
+
 ---
 
 ## 1. 先看 RDMA 代码里的 Ptr
 
 在你的 `RdmaHw` 里，有很多这样的代码：
+
+代码来源：
+
+```text
+src/point-to-point/model/rdma-hw.cc
+```
 
 ```cpp
 Ptr<RdmaQueuePair> qp = CreateObject<RdmaQueuePair>(pg, sip, dip, sport, dport);
@@ -181,6 +202,12 @@ Ptr<RdmaQueuePair>
 
 ns-3 的 `Ptr<T>` 源码注释里说，它类似：
 
+代码来源：
+
+```text
+src/core/model/ptr.h
+```
+
 ```cpp
 boost::intrusive_ptr
 ```
@@ -246,6 +273,12 @@ SimpleRefCount
 
 比如 `Packet`：
 
+代码来源：
+
+```text
+src/network/model/packet.h
+```
+
 ```cpp
 class Packet : public SimpleRefCount<Packet>
 {
@@ -303,6 +336,12 @@ Ptr<T>
 `Ptr<T>` 内部其实很朴素。
 
 可以粗略理解成：
+
+简化自：
+
+```text
+src/core/model/ptr.h
+```
 
 ```cpp
 template <typename T>
@@ -440,6 +479,12 @@ Ptr<Packet> newp = Create<Packet>(payload_size);
 
 `Create<T>()` 大概做了这样的事情：
 
+简化自：
+
+```text
+src/core/model/ptr.h
+```
+
 ```cpp
 return Ptr<T>(new T(args...), false);
 ```
@@ -531,6 +576,12 @@ CreateObject<T>()
 
 比如你的 RDMA 代码里：
 
+代码来源：
+
+```text
+src/point-to-point/model/rdma-hw.cc
+```
+
 ```cpp
 Ptr<RdmaQueuePair> qp =
     CreateObject<RdmaQueuePair>(pg, sip, dip, sport, dport);
@@ -560,6 +611,12 @@ ns3::Object
 
 比如：
 
+代码来源：
+
+```text
+src/point-to-point/model/rdma-queue-pair.h
+```
+
 ```cpp
 class RdmaQueuePair : public Object {
     ...
@@ -584,6 +641,12 @@ Dispose / DoDispose
 它还会做对象构造后的 ns-3 初始化工作。
 
 源码里大概是：
+
+代码来源：
+
+```text
+src/core/model/object.h
+```
 
 ```cpp
 Ptr<T> CompleteConstruct(T* p) {
@@ -635,6 +698,12 @@ CreateObject<T>()
 `ns3::Object` 可以理解成 ns-3 仿真对象体系的基类。
 
 它本身继承了引用计数：
+
+代码来源：
+
+```text
+src/core/model/object.h
+```
 
 ```cpp
 class Object : public SimpleRefCount<Object, ObjectBase, ObjectDeleter>
@@ -732,6 +801,13 @@ DoDispose()
 子类应该在 `DoDispose()` 里清理自己持有的 `Ptr`、取消事件、释放和其他对象的引用关系。
 
 ns-3 的注释里也强调：很多真正的销毁清理逻辑应该放到 `DoDispose()`，而不是析构函数里。
+
+相关源码：
+
+```text
+src/core/model/object.h
+src/core/model/object.cc
+```
 
 可以粗略理解：
 
@@ -1137,6 +1213,12 @@ ns-3 仿真对象，用 Ptr<T>。
 
 看这段代码：
 
+代码来源：
+
+```text
+src/point-to-point/model/rdma-hw.cc
+```
+
 ```cpp
 Ptr<RdmaQueuePair> qp =
     CreateObject<RdmaQueuePair>(pg, sip, dip, sport, dport);
@@ -1203,6 +1285,12 @@ void RdmaHw::DeleteQueuePair(Ptr<RdmaQueuePair> qp) {
 `Packet` 不是 `Object` 子类。
 
 它继承的是：
+
+代码来源：
+
+```text
+src/network/model/packet.h
+```
 
 ```cpp
 SimpleRefCount<Packet>
