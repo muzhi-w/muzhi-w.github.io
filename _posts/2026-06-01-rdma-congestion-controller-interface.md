@@ -8,7 +8,7 @@ description: "从父类指针、虚函数、纯虚函数、析构函数和虚析
 
 这篇文章记录一次 RDMA sender-side 拥塞控制接口的重构。
 
-这次重构里，我们引入了一个统一接口：
+这次重构里，我引入了一个统一接口：
 
 ```cpp
 class IRdmaCongestionController {
