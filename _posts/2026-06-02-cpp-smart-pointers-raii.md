@@ -599,6 +599,92 @@ std::unique_ptr<Dog>
 
 这种写法更简洁，也更不容易在复杂表达式里出错。
 
+### 9.1 unique_ptr 的几种创建语法
+
+先看 C++11 里最基础的写法：
+
+```cpp
+std::unique_ptr<Dog> d(new Dog());
+```
+
+这句话可以拆成两部分：
+
+```cpp
+new Dog()
+```
+
+表示在堆上创建一个 `Dog` 对象，并返回它的裸指针。
+
+```cpp
+std::unique_ptr<Dog>(...)
+```
+
+表示创建一个 `unique_ptr<Dog>`，让它接管这个裸指针。
+
+所以完整语义是：
+
+```text
+创建一个 Dog 对象。
+立刻交给 unique_ptr<Dog> 管理。
+以后不用手动 delete。
+```
+
+也可以写成直接初始化：
+
+```cpp
+std::unique_ptr<Dog> d(new Dog());
+```
+
+或者临时对象写法：
+
+```cpp
+std::unique_ptr<Dog>(new Dog())
+```
+
+第二种经常出现在 `return` 语句里：
+
+```cpp
+std::unique_ptr<Dog> CreateDog() {
+    return std::unique_ptr<Dog>(new Dog());
+}
+```
+
+注意，不要写成：
+
+```cpp
+std::unique_ptr<Dog> d = new Dog();  // 错误写法
+```
+
+`new Dog()` 返回的是裸指针 `Dog*`，而左边需要的是 `std::unique_ptr<Dog>`。
+
+`unique_ptr` 的构造函数是显式的，所以应该明确写出：
+
+```cpp
+std::unique_ptr<Dog> d(new Dog());
+```
+
+或者在 C++14 之后写：
+
+```cpp
+auto d = std::make_unique<Dog>();
+```
+
+如果涉及多态，也可以让父类智能指针管理子类对象：
+
+```cpp
+std::unique_ptr<Animal> a(new Dog());
+```
+
+这里真实对象是 `Dog`，但智能指针类型是：
+
+```cpp
+std::unique_ptr<Animal>
+```
+
+这要求 `Dog` 继承自 `Animal`。
+
+如果以后通过 `Animal*` 销毁真实的 `Dog` 对象，`Animal` 的析构函数还应该是 `virtual`。
+
 不过要注意：
 
 ```text
@@ -1684,6 +1770,92 @@ RdmaHw 之后负责拥有和销毁。
 ```
 
 这种所有权流动非常清楚。
+
+单独看这一句：
+
+```cpp
+return std::unique_ptr<IRdmaCongestionController>(new DcqcnCongestionController());
+```
+
+它其实可以拆成三步理解。
+
+第一步：
+
+```cpp
+new DcqcnCongestionController()
+```
+
+在堆上创建一个真正的 `DcqcnCongestionController` 对象。
+
+这个表达式返回的是一个裸指针：
+
+```cpp
+DcqcnCongestionController*
+```
+
+第二步：
+
+```cpp
+std::unique_ptr<IRdmaCongestionController>(...)
+```
+
+创建一个 `unique_ptr` 临时对象，让它接管刚才 `new` 出来的 controller。
+
+虽然真实对象是：
+
+```cpp
+DcqcnCongestionController
+```
+
+但因为 `DcqcnCongestionController` 继承了：
+
+```cpp
+IRdmaCongestionController
+```
+
+所以可以用父类智能指针来管理子类对象：
+
+```cpp
+std::unique_ptr<IRdmaCongestionController>
+```
+
+第三步：
+
+```cpp
+return ...
+```
+
+把这个 `unique_ptr` 返回给调用者。
+
+如果写得啰嗦一点，大概相当于：
+
+```cpp
+std::unique_ptr<IRdmaCongestionController> RdmaCcFactory::Create(uint32_t ccMode) {
+    IRdmaCongestionController* raw = new DcqcnCongestionController();
+    std::unique_ptr<IRdmaCongestionController> controller(raw);
+    return controller;
+}
+```
+
+真实代码里不这样拆开写，是因为一行就能清楚表达：
+
+```text
+new 出一个具体 controller。
+立刻交给 unique_ptr 管理。
+把 unique_ptr 返回出去。
+```
+
+然后调用方：
+
+```cpp
+m_ccController = RdmaCcFactory::Create(m_cc_mode);
+```
+
+会把这个返回的 `unique_ptr` 移动到 `RdmaHw` 的成员变量 `m_ccController` 里。
+
+从这一刻开始，controller 就归 `RdmaHw` 管了。
+
+当 `m_ccController` 被销毁或被重新赋值时，旧 controller 会自动销毁。
 
 如果项目支持 C++14，也可以写得更现代：
 
