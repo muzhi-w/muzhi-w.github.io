@@ -1,0 +1,99 @@
+cpp_system:
+  title: "C++ 系统补课"
+  description: "从零建立读懂 ns-3/RDMA 源码所需的 C++ 知识地基。"
+  posts:
+    - slug: cpp-systematic-learning-map
+      index: "00"
+      title: "从零建立 C++ 知识地图"
+    - slug: cpp-program-variable-type-value
+      index: "01"
+      title: "程序、变量、类型和值"
+    - slug: cpp-memory-address-pointer
+      index: "02"
+      title: "内存、地址和指针"
+    - slug: cpp-reference-const-reference-parameters
+      index: "03"
+      title: "引用、const 引用和函数参数"
+    - slug: cpp-functions-return-parameters
+      index: "04"
+      title: "函数、返回值和参数传递"
+    - slug: cpp-const-from-variable-to-member-function
+      index: "05"
+      title: "const：从 const int 到 const 成员函数"
+    - slug: cpp-class-struct-object
+      index: "06"
+      title: "class 和 struct：对象到底是什么"
+    - slug: cpp-constructor-initializer-this
+      index: "07"
+      title: "构造函数、初始化列表和 this 指针"
+    - slug: cpp-destructor-lifetime-raii
+      index: "08"
+      title: "析构函数、栈对象、堆对象和 RAII"
+    - slug: cpp-copy-constructor-assignment
+      index: "09"
+      title: "拷贝构造、赋值运算符和对象复制"
+    - slug: cpp-inheritance-polymorphism-virtual-override
+      index: "10"
+      title: "继承、多态、virtual 和 override"
+    - slug: cpp-pure-virtual-interface-virtual-destructor
+      index: "11"
+      title: "纯虚函数、接口类和虚析构函数"
+    - slug: cpp-header-source-include-namespace
+      index: "12"
+      title: "头文件、源文件、include 和 namespace"
+    - slug: cpp-compile-link-library-build
+      index: "13"
+      title: "编译、链接、库和构建系统"
+    - slug: cpp-stl-string-vector-map-iterator
+      index: "14"
+      title: "STL 入门：string、vector、map 和 iterator"
+    - slug: cpp-function-pointer-member-pointer-lambda
+      index: "15"
+      title: "函数指针、成员函数指针和 lambda"
+    - slug: cpp-template-typename-generic
+      index: "16"
+      title: "模板：template、typename 和泛型"
+    - slug: cpp-smart-pointer-resource-management
+      index: "17"
+      title: "智能指针和资源管理"
+    - slug: cpp-back-to-ns3-rdma-source-reading
+      index: "18"
+      title: "回到 ns-3：Ptr<T>、Object、Simulator、Packet"
+
+cpp_practice:
+  title: "C++ 工程实践"
+  description: "围绕真实重构和 ns-3 源码展开的 C++ 进阶应用。"
+  posts:
+    - slug: cpp-smart-pointers-raii
+      title: "彻底理解 C++ 智能指针：从 new/delete 到 RAII"
+    - slug: cpp-templates-from-ns3-ptr
+      title: "彻底理解 C++ 模板：从 Ptr<T> 看懂 typename 和尖括号"
+
+ns3_core:
+  title: "ns-3 源码阅读"
+  description: "理解 ns-3 的核心抽象：Ptr、Object、事件系统和 Packet。"
+  posts:
+    - slug: ns3-ptr-reference-count
+      title: "彻底理解 ns-3 的 Ptr：从引用计数到 RDMA 对象生命周期"
+    - slug: ns3-object-typeid-attribute
+      title: "彻底理解 ns-3 对象系统：Object、TypeId 和 Attribute"
+    - slug: ns3-simulator-eventid-rdma-timers
+      title: "彻底理解 ns-3 事件系统：Simulator、EventId 和 RDMA 定时器"
+    - slug: ns3-packet-header-tag-buffer-rdma
+      title: "彻底理解 ns-3 的 Packet：Header、Tag、Buffer 和 RDMA 报文生命周期"
+
+rdma:
+  title: "RDMA / DCQCN 源码与模型"
+  description: "围绕 RDMA 拥塞控制、DCQCN 和后续协议路径展开。"
+  posts:
+    - slug: dcqcn-fluid-model
+      title: "DCQCN 流体模型详细推导"
+    - slug: rdma-congestion-controller-interface
+      title: "从 C++ 虚函数到 RDMA 拥塞控制接口重构"
+
+tools:
+  title: "工具与环境"
+  description: "开发、构建、预览和版本管理记录。"
+  posts:
+    - slug: git
+      title: "从零把代码推送到 GitHub/Gitee：创建仓库、配置 SSH、push、clone 和同步"

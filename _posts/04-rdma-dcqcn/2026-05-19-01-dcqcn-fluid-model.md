@@ -1,11 +1,18 @@
 ---
 title: "DCQCN 流体模型详细推导"
 date: 2026-05-19 12:00:00 +0800
+permalink: /posts/dcqcn-fluid-model/
 categories: [网络, 拥塞控制]
 tags: [dcqcn, rdma, ecn, fluid-model]
 description: "从 DCQCN 的离散算法出发，推导论文中的流体模型方程，并解释 Equations (5)-(9) 的来源。"
 math: true
 ---
+
+<!-- series-nav -->
+> **系列位置**：RDMA / DCQCN 源码与模型，第 01 篇 / 共 2 篇
+> **总目录**：[学习路线](/roadmap/)
+> **下一篇**：[从 C++ 虚函数到 RDMA 拥塞控制接口重构](/posts/rdma-congestion-controller-interface/)
+
 
 本文只推导 DCQCN 的流体模型。目标是把 DCQCN 论文中的流体模型从离散算法一步一步推到连续时间方程，尤其解释为什么会得到论文里的 Equations (5)-(9)。
 

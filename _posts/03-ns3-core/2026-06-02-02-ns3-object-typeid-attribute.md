@@ -1,10 +1,18 @@
 ---
 title: "彻底理解 ns-3 对象系统：Object、TypeId 和 Attribute"
 date: 2026-06-02 17:45:00 +0800
+permalink: /posts/ns3-object-typeid-attribute/
 categories: [网络, ns-3]
 tags: [ns3, object, typeid, attribute, object-factory, rdma, cpp]
 description: "从 ns-3 的 Object 基类讲起，理解 TypeId、GetTypeId、Attribute、Accessor、Checker、ObjectFactory，以及它们在 RDMA 模块中的作用。"
 ---
+
+<!-- series-nav -->
+> **系列位置**：ns-3 源码阅读，第 02 篇 / 共 4 篇
+> **总目录**：[学习路线](/roadmap/)
+> **上一篇**：[彻底理解 ns-3 的 Ptr：从引用计数到 RDMA 对象生命周期](/posts/ns3-ptr-reference-count/)
+> **下一篇**：[彻底理解 ns-3 事件系统：Simulator、EventId 和 RDMA 定时器](/posts/ns3-simulator-eventid-rdma-timers/)
+
 
 前面几篇文章已经讲了：
 

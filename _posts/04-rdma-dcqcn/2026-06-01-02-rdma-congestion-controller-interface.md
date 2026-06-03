@@ -1,10 +1,17 @@
 ---
 title: "从 C++ 虚函数到 RDMA 拥塞控制接口重构"
 date: 2026-06-01 12:00:00 +0800
+permalink: /posts/rdma-congestion-controller-interface/
 categories: [网络, ns-3]
 tags: [cpp, virtual, destructor, rdma, congestion-control, ns3]
 description: "从父类指针、虚函数、纯虚函数、析构函数和虚析构函数讲起，再分析 RDMA sender-side 拥塞控制接口的重构设计。"
 ---
+
+<!-- series-nav -->
+> **系列位置**：RDMA / DCQCN 源码与模型，第 02 篇 / 共 2 篇
+> **总目录**：[学习路线](/roadmap/)
+> **上一篇**：[DCQCN 流体模型详细推导](/posts/dcqcn-fluid-model/)
+
 
 这篇文章记录一次 RDMA sender-side 拥塞控制接口的重构。
 

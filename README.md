@@ -80,6 +80,34 @@ Ctrl+C
 date: 2026-06-02 12:00:00 +0800
 ```
 
+## Content Organization
+
+文章按系列放在 `_posts/` 的子目录里。每篇文章在 front matter 里写固定 `permalink`，这样即使文件名为了排序加了编号，网页地址仍然保持稳定。
+
+```text
+_posts/
+├── 01-cpp-system/       C++ 系统补课，从 0 到能读 ns-3/RDMA 源码
+├── 02-cpp-practice/     C++ 工程实践，例如智能指针、模板
+├── 03-ns3-core/         ns-3 核心机制，例如 Ptr、Object、事件系统、Packet
+├── 04-rdma-dcqcn/       RDMA/DCQCN 模型和源码重构
+└── 05-tools/            Git、Jekyll、本地环境等工具记录
+
+_data/series.yml         内部系列索引
+_tabs/roadmap.md         读者入口：学习路线
+```
+
+新增系列文章时，遵循这几条规则：
+
+```text
+1. 先判断文章属于哪个系列，再放到对应编号子目录。
+2. 标题带系列前缀，例如 C++ 系统补课 02。
+3. 文件名也带系列内编号，例如 `2026-06-03-02-cpp-memory-address-pointer.md`。
+4. front matter 使用稳定的 categories、tags 和 permalink。
+5. 文章开头加 series-nav：系列位置、总目录、上一篇、下一篇。
+6. 同步更新 _data/series.yml 和 _tabs/roadmap.md。
+7. 构建检查：bundle _2.4.22_ exec jekyll build --future
+```
+
 如果当前时间还没到这个发布时间，普通 `jekyll serve` 会跳过这篇文章；加上 `--future` 就可以在本地提前预览。
 
 如果 `4000` 端口已经被占用，可以换一个端口：

@@ -1,10 +1,17 @@
 ---
 title: "彻底理解 ns-3 的 Packet：Header、Tag、Buffer 和 RDMA 报文生命周期"
 date: 2026-06-02 18:35:00 +0800
+permalink: /posts/ns3-packet-header-tag-buffer-rdma/
 categories: [网络, ns-3]
 tags: [ns3, packet, header, tag, buffer, rdma, qbb, hpcc]
 description: "从 Packet 的 Buffer、Header、Tag 和 Metadata 讲起，理解 AddHeader、RemoveHeader、PeekHeader、PacketTag/ByteTag，以及 RDMA 数据包、ACK/NACK、CNP、PFC 在 ns-3 里的生命周期。"
 ---
+
+<!-- series-nav -->
+> **系列位置**：ns-3 源码阅读，第 04 篇 / 共 4 篇
+> **总目录**：[学习路线](/roadmap/)
+> **上一篇**：[彻底理解 ns-3 事件系统：Simulator、EventId 和 RDMA 定时器](/posts/ns3-simulator-eventid-rdma-timers/)
+
 
 前面几篇文章已经讲了：
 

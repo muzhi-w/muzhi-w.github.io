@@ -1,10 +1,17 @@
 ---
 title: "彻底理解 C++ 模板：从 Ptr<T> 看懂 typename 和尖括号"
 date: 2026-06-02 16:15:00 +0800
+permalink: /posts/cpp-templates-from-ns3-ptr/
 categories: [C++, 工程实践]
 tags: [cpp, template, typename, generic-programming, ns3, ptr]
 description: "从为什么需要模板讲起，理解 template <typename T>、类模板、函数模板、多模板参数、模板实例化，以及 ns-3 里的 Ptr<T>、Create<T>() 和 SimpleRefCount<T>。"
 ---
+
+<!-- series-nav -->
+> **系列位置**：C++ 工程实践，第 02 篇 / 共 2 篇
+> **总目录**：[学习路线](/roadmap/)
+> **上一篇**：[彻底理解 C++ 智能指针：从 new/delete 到 RAII](/posts/cpp-smart-pointers-raii/)
+
 
 上一篇写 ns-3 的 `Ptr<T>` 时，我意识到一个问题：
 

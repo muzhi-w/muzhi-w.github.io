@@ -1,10 +1,18 @@
 ---
 title: "彻底理解 ns-3 事件系统：Simulator、EventId 和 RDMA 定时器"
 date: 2026-06-02 17:55:00 +0800
+permalink: /posts/ns3-simulator-eventid-rdma-timers/
 categories: [网络, ns-3]
 tags: [ns3, simulator, eventid, event, timer, rdma, dcqcn]
 description: "从 Simulator::Schedule、EventId、EventImpl 和 MakeEvent 讲起，理解 ns-3 离散事件仿真，以及 RDMA 重传定时器、DCQCN 周期事件和 QbbNetDevice 发送事件。"
 ---
+
+<!-- series-nav -->
+> **系列位置**：ns-3 源码阅读，第 03 篇 / 共 4 篇
+> **总目录**：[学习路线](/roadmap/)
+> **上一篇**：[彻底理解 ns-3 对象系统：Object、TypeId 和 Attribute](/posts/ns3-object-typeid-attribute/)
+> **下一篇**：[彻底理解 ns-3 的 Packet：Header、Tag、Buffer 和 RDMA 报文生命周期](/posts/ns3-packet-header-tag-buffer-rdma/)
+
 
 前面几篇文章已经讲了：
 

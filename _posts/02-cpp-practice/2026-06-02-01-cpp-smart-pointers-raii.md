@@ -1,10 +1,17 @@
 ---
 title: "彻底理解 C++ 智能指针：从 new/delete 到 RAII"
 date: 2026-06-02 8:00:00 +0800
+permalink: /posts/cpp-smart-pointers-raii/
 categories: [C++, 工程实践]
 tags: [cpp, smart-pointer, unique_ptr, shared_ptr, weak_ptr, raii, memory-management]
 description: "从裸指针、所有权和 RAII 讲起，系统理解 unique_ptr、shared_ptr、weak_ptr，以及它们在 RDMA 拥塞控制接口重构中的作用。"
 ---
+
+<!-- series-nav -->
+> **系列位置**：C++ 工程实践，第 01 篇 / 共 2 篇
+> **总目录**：[学习路线](/roadmap/)
+> **下一篇**：[彻底理解 C++ 模板：从 Ptr<T> 看懂 typename 和尖括号](/posts/cpp-templates-from-ns3-ptr/)
+
 
 上一篇文章里，我们从 C++ 虚函数、纯虚函数和虚析构函数讲到了 RDMA sender-side 拥塞控制接口的重构。
 
