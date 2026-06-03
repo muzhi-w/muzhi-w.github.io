@@ -461,9 +461,9 @@ const T& 是只读引用。
 ns-3 里的 `Packet` API 非常适合理解引用：
 
 ```cpp
-AddHeader(const Header& header)  读取 header，不修改它
-RemoveHeader(Header& header)    解析并填充 header
-PeekHeader(Header& header) const 填充参数，但不修改 Packet
+void AddHeader(const Header& header);        // 读取 header，不修改 header；会修改 Packet
+uint32_t RemoveHeader(Header& header);       // 解析并填充 header；会修改 Packet
+uint32_t PeekHeader(Header& header) const;   // 解析并填充 header；不修改 Packet
 ```
 
 下一篇进入：
