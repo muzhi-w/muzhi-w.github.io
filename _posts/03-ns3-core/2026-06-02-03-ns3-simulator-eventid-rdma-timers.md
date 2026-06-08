@@ -88,7 +88,7 @@ m_nextSend = Simulator::Schedule(
 等仿真时间走到那个点，Simulator 再把这个函数取出来执行。
 ```
 
-这篇文章就彻底讲清楚：
+本文就彻底讲清楚：
 
 ```text
 Simulator 是什么？
@@ -104,7 +104,7 @@ RDMA 代码里的重传定时器、DCQCN 定时器、发送定时器到底在干
 
 ns-3 的时间不是现实世界的时间。
 
-比如你写：
+比如写：
 
 ```cpp
 Simulator::Schedule(Seconds(10), &Foo::Bar, this);
@@ -147,7 +147,7 @@ Simulator::Schedule(Seconds(10), &Foo::Bar, this);
 所以读 ns-3 代码时，要始终分清：
 
 ```text
-真实时间：你的电脑实际花了多久运行程序
+真实时间：运行程序的电脑实际花了多久
 仿真时间：ns-3 模拟出来的网络世界里的时间
 ```
 
@@ -173,7 +173,7 @@ Simulator::Schedule(NanoSeconds(20), &C, ...);
 30ns  -> A
 ```
 
-当你调用：
+当程序调用：
 
 ```cpp
 Simulator::Run();
@@ -315,25 +315,6 @@ Simulator::Schedule(
 100 纳秒仿真时间之后，调用 this->DequeueAndTransmit()。
 ```
 
-如果是普通函数，不是成员函数，也可以调度：
-
-```cpp
-void PrintSomething(uint32_t x);
-
-Simulator::Schedule(
-    Seconds(1),
-    &PrintSomething,
-    10);
-```
-
-意思是：
-
-```text
-1 秒仿真时间之后，调用 PrintSomething(10)。
-```
-
-不过你现在 RDMA 代码里最常见的是成员函数版本。
-
 ## 5. Schedule 的第一个参数是相对时间，不是绝对时间
 
 这是一个很容易踩坑的地方。
@@ -347,7 +328,7 @@ Simulator::Schedule(
 不是：
 
 ```text
-我要安排到仿真时间 delay 这个绝对时刻。
+目标是安排到仿真时间 delay 这个绝对时刻。
 ```
 
 比如当前：
@@ -370,13 +351,13 @@ Simulator::Schedule(MicroSeconds(30), &Foo::Bar, this);
 
 执行。
 
-如果你手里有一个绝对时间 `t`，想在 `t` 那一刻执行，就要写：
+如果手里有一个绝对时间 `t`，想在 `t` 那一刻执行，就要写：
 
 ```cpp
 Simulator::Schedule(t - Simulator::Now(), &Foo::Bar, this);
 ```
 
-你的 `QbbNetDevice` 代码里就有这个模式。
+在 `QbbNetDevice` 代码里就有这个模式。
 
 代码来源：
 
@@ -435,10 +416,10 @@ EventId id = Simulator::Schedule(
 或者说：
 
 ```text
-你之后还能找到这个事件的一张小票。
+之后还能找到这个事件的一张小票。
 ```
 
-有了它，你可以：
+有了它，可以：
 
 ```cpp
 Simulator::Cancel(id);
@@ -537,7 +518,7 @@ id.IsExpired();
 
 这对写定时器非常方便。
 
-比如你的 RDMA 状态里直接放了几个 `EventId` 字段。
+比如在 RDMA 状态里直接放了几个 `EventId` 字段。
 
 代码来源：
 
@@ -561,7 +542,7 @@ struct RdmaDcqcnQpState {
 
 即使这些事件还没被真正 schedule，调用 `Cancel` 也不会炸。
 
-所以你代码里可以直接写：
+所以代码里可以直接写：
 
 代码来源：
 
@@ -581,7 +562,7 @@ void RdmaDcqcn::CancelQpEvents(Ptr<RdmaQueuePair> qp) {
 
 ## 7. IsRunning 和 IsExpired 的含义
 
-`EventId::IsRunning()` 的源码非常短。
+`EventId::IsRunning()` 和 `EventId::IsExpired()` 是一对相反的状态判断。
 
 代码来源：
 
@@ -597,22 +578,103 @@ EventId::IsRunning(void) const
 }
 ```
 
-也就是说：
+`IsRunning()` 自己没有复杂逻辑。
+
+它只是反过来调用 `IsExpired()`：
 
 ```text
-IsRunning() == 事件还没过期
-IsExpired() == 事件已经过期，或者已经不再有效地等待执行
+IsRunning() == !IsExpired()
 ```
 
-这里的“过期”不是说对象生命周期过期。
+所以真正要理解的是 `IsExpired()`。
+
+它的源码也很短。
+
+代码来源：
+
+```text
+src/core/model/event-id.cc
+```
+
+```cpp
+bool
+EventId::IsExpired(void) const
+{
+    return Simulator::IsExpired(*this);
+}
+```
+
+也就是说，`EventId` 自己并不直接判断事件是否过期。
+
+它只是把当前这个事件句柄交给 `Simulator`：
+
+```text
+请检查这张事件小票，看看它现在还算不算一个有效等待执行的事件。
+```
+
+在默认 simulator 里，核心判断可以简化成这样。
+
+代码来源：
+
+```text
+src/core/model/default-simulator-impl.cc
+```
+
+```cpp
+if (ev.PeekEventImpl() == 0 ||
+    ev.GetTs() < m_currentTs ||
+    (ev.GetTs() == m_currentTs && ev.GetUid() <= m_currentUid) ||
+    ev.PeekEventImpl()->IsCancelled()) {
+    return true;
+}
+
+return false;
+```
+
+这段判断说明，`IsExpired()` 返回 `true` 的情况主要有几类：
+
+```text
+EventId 没有指向真正的事件对象
+事件的时间戳已经早于当前仿真时间
+事件在当前仿真时间点已经执行过
+事件已经被 Cancel / Remove 标记为取消
+```
+
+因此，这里的“过期”不是说 C++ 对象生命周期过期。
 
 它指的是：
 
 ```text
-这个事件是否已经到达它的仿真时间点，或者已经不再处于等待执行的状态。
+这个 EventId 是否已经不再代表一个有效等待执行的事件。
 ```
 
-你的 `RdmaHw` 里有一个很典型的写法。
+可以按下面这张表理解：
+
+| EventId 状态 | IsExpired() | IsRunning() |
+| --- | --- | --- |
+| 默认构造，还没有 Schedule 过 | true | false |
+| 已经 Schedule，仍在等待执行 | false | true |
+| 已经执行过 | true | false |
+| 已经 Cancel | true | false |
+| 已经 Remove | true | false |
+
+所以 `IsExpired()` 的常见读法是：
+
+```text
+这个事件是不是已经失效？
+如果已经失效，返回 true。
+如果还在等待执行，返回 false。
+```
+
+`IsRunning()` 的常见读法是：
+
+```text
+这个事件是不是还在等待执行？
+如果还在等待执行，返回 true。
+如果已经失效，返回 false。
+```
+
+在 `RdmaHw` 里有一个很典型的写法。
 
 代码来源：
 
@@ -641,6 +703,33 @@ qp->m_retransmit = Simulator::Schedule(
 ```
 
 这就是标准的“重启定时器”模式。
+
+而 `QbbNetDevice` 使用 `IsExpired()` 的方向正好相反：
+
+代码来源：
+
+```text
+src/point-to-point/model/qbb-net-device.cc
+```
+
+```cpp
+if (valid && m_nextSend.IsExpired() &&
+    t < Simulator::GetMaximumSimulationTime() &&
+    t > Simulator::Now()) {
+    m_nextSend = Simulator::Schedule(
+        t - Simulator::Now(),
+        &QbbNetDevice::DequeueAndTransmit,
+        this);
+}
+```
+
+这里的 `m_nextSend.IsExpired()` 表示：
+
+```text
+当前没有一个有效等待执行的 next send 事件。
+```
+
+因此可以安全地安排新的 `DequeueAndTransmit`。
 
 ## 8. EventImpl 是真正被执行的事件对象
 
@@ -953,7 +1042,7 @@ Simulator::Schedule(delay, &Foo::Bar, foo);
 ```text
 事件里保存的是裸指针。
 事件不会增加这个对象的引用计数。
-你必须保证事件执行前，这个对象还活着。
+必须保证事件执行前，这个对象还活着。
 如果对象提前销毁，又没有取消事件，就可能出问题。
 ```
 
@@ -1114,7 +1203,7 @@ qp->m_retransmit.Cancel();
 
 这通常不是 bug。
 
-但是如果你在排查对象迟迟不析构，或者内存占用峰值，就要知道这个机制。
+但是排查对象迟迟不析构，或者内存占用峰值时，要知道这个机制。
 
 ## 12. ScheduleNow、ScheduleDestroy、ScheduleWithContext
 
@@ -1157,7 +1246,7 @@ Simulator::ScheduleNow(&Foo::Bar, this);
 等仿真器继续调度事件时再执行。
 ```
 
-这在你想打断当前调用栈，或者希望某个动作通过事件系统统一执行时很有用。
+这在需要打断当前调用栈，或者希望某个动作通过事件系统统一执行时很有用。
 
 ### 12.2 ScheduleDestroy
 
@@ -1242,7 +1331,7 @@ Simulator::ScheduleWithContext(
 
 ## 13. RDMA 重传定时器：m_retransmit
 
-现在看你的 RDMA 代码。
+现在看 RDMA 代码。
 
 代码来源：
 
@@ -1284,7 +1373,7 @@ void RdmaHw::RestartRetransmitTimer(Ptr<RdmaQueuePair> qp, Time rto) {
 这段代码可以翻译成自然语言：
 
 ```text
-我要为这个 QP 设置一个超时事件。
+为这个 QP 设置一个超时事件。
 如果之前已经有一个超时事件还没触发，就先取消旧的。
 然后安排一个新的事件：
     rto 仿真时间之后，调用 this->HandleTimeout(qp, rto)。
@@ -1305,7 +1394,7 @@ t = 105us 又因为新的发送逻辑重启 timer，安排 timeout at 135us
 
 如果不取消旧事件，那么 `130us` 和 `135us` 都可能触发 `HandleTimeout`。
 
-这通常不是你想要的。
+这通常不符合定时器语义。
 
 所以正确模式是：
 
@@ -1723,7 +1812,7 @@ void RdmaDcqcn::CancelQpEvents(Ptr<RdmaQueuePair> qp) {
 
 所以 QP 生命周期结束时必须取消这些事件。
 
-这也是为什么你的 `RdmaHw::QpComplete` 里先调用：
+这也是为什么 `RdmaHw::QpComplete` 里先调用：
 
 代码来源：
 
@@ -1961,7 +2050,7 @@ t = 120us 又收到 pause 50us，应该 170us 恢复
 
 ## 18. RDMA 事件系统里最常见的三种模式
 
-你现在的 RDMA/ns-3 代码里，事件系统基本有三种模式。
+当前 RDMA/ns-3 代码里，事件系统基本有三种模式。
 
 ### 18.1 一次性事件
 
@@ -2354,7 +2443,7 @@ ns-3 的事件系统不是孤立的。
 
 ## 23. 总结
 
-这篇文章可以浓缩成几句话。
+本文可以浓缩成几句话。
 
 `Simulator` 是 ns-3 的仿真时间调度器。
 
