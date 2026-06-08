@@ -99,3 +99,5 @@ tools:
       title: "从零把代码推送到 GitHub/Gitee：创建仓库、配置 SSH、push、clone 和同步"
     - slug: git-command-workflow
       title: "Git 指令系统整理：从 status、branch 到 reset、merge 和远程同步"
+    - slug: wsl2-use-windows-proxy
+      title: "让 WSL2 使用 Windows 下的代理网络"
