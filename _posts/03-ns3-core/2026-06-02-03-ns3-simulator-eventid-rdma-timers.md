@@ -315,6 +315,136 @@ Simulator::Schedule(
 100 纳秒仿真时间之后，调用 this->DequeueAndTransmit()。
 ```
 
+### 4.1 自己写定时器时，Schedule 参数怎么填
+
+最实用的方法是：
+
+```text
+先看将来要执行的函数长什么样。
+然后按函数签名，把 Schedule 的参数一个个填进去。
+```
+
+通用模板是：
+
+```cpp
+EventId timer = Simulator::Schedule(
+    delay,
+    &ClassName::FunctionName,
+    object,
+    functionArg1,
+    functionArg2);
+```
+
+可以这样对应：
+
+```text
+delay                    多久之后触发这个定时器
+&ClassName::FunctionName  定时器触发后要调用哪个成员函数
+object                   对哪个对象调用这个成员函数
+functionArg1             传给成员函数的第 1 个参数
+functionArg2             传给成员函数的第 2 个参数
+```
+
+关键点是：
+
+```text
+object 后面的参数，要和目标函数的参数列表一一对应。
+顺序要一样。
+数量要一样。
+类型也要能匹配。
+```
+
+比如目标函数是：
+
+```cpp
+void QbbNetDevice::Resume(uint32_t qIndex);
+```
+
+它有 1 个参数：
+
+```text
+qIndex
+```
+
+所以调度时，`this` 后面也要放 1 个参数：
+
+```cpp
+m_resumeEvt[qIndex] = Simulator::Schedule(
+    MicroSeconds(ch.pfc.time),
+    &QbbNetDevice::Resume,
+    this,
+    qIndex);
+```
+
+这句话最后会变成：
+
+```text
+ch.pfc.time 微秒之后，调用 this->Resume(qIndex)。
+```
+
+再看重传定时器。
+
+目标函数是：
+
+```cpp
+void RdmaHw::HandleTimeout(Ptr<RdmaQueuePair> qp, Time rto);
+```
+
+它有 2 个参数：
+
+```text
+qp
+rto
+```
+
+所以调度时，`this` 后面也要放 2 个参数：
+
+```cpp
+qp->m_retransmit = Simulator::Schedule(
+    rto,
+    &RdmaHw::HandleTimeout,
+    this,
+    qp,
+    rto);
+```
+
+这句话最后会变成：
+
+```text
+rto 仿真时间之后，调用 this->HandleTimeout(qp, rto)。
+```
+
+如果目标函数没有参数：
+
+```cpp
+void QbbNetDevice::DequeueAndTransmit();
+```
+
+那么 `this` 后面就什么都不用放：
+
+```cpp
+m_nextSend = Simulator::Schedule(
+    t - Simulator::Now(),
+    &QbbNetDevice::DequeueAndTransmit,
+    this);
+```
+
+这句话最后会变成：
+
+```text
+t - Simulator::Now() 之后，调用 this->DequeueAndTransmit()。
+```
+
+所以写定时器时可以按这个顺序填：
+
+```text
+第一，多久之后执行？
+第二，执行哪个类的哪个函数？
+第三，对哪个对象执行？
+第四，这个函数需要哪些参数？
+第五，要不要保存返回的 EventId，方便后面 Cancel / IsRunning / IsExpired？
+```
+
 ## 5. Schedule 的第一个参数是相对时间，不是绝对时间
 
 这是一个很容易踩坑的地方。
