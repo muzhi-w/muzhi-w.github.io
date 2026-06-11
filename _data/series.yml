@@ -81,6 +81,8 @@ ns3_core:
       title: "彻底理解 ns-3 事件系统：Simulator、EventId 和 RDMA 定时器"
     - slug: ns3-packet-header-tag-buffer-rdma
       title: "彻底理解 ns-3 的 Packet：Header、Tag、Buffer 和 RDMA 报文生命周期"
+    - slug: ns3-tag-packettag-bytetag-rdma
+      title: "彻底理解 ns-3 的 Tag：PacketTag、ByteTag 和 RDMA 仿真元信息"
 
 rdma:
   title: "RDMA / DCQCN 源码与模型"

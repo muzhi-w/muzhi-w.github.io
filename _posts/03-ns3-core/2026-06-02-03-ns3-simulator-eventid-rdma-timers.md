@@ -8,7 +8,7 @@ description: "从 Simulator::Schedule、EventId、EventImpl 和 MakeEvent 讲起
 ---
 
 <!-- series-nav -->
-> **系列位置**：ns-3 源码阅读，第 03 篇 / 共 4 篇
+> **系列位置**：ns-3 源码阅读，第 03 篇 / 共 5 篇
 > **总目录**：[学习路线](/roadmap/)
 > **上一篇**：[彻底理解 ns-3 对象系统：Object、TypeId 和 Attribute](/posts/ns3-object-typeid-attribute/)
 > **下一篇**：[彻底理解 ns-3 的 Packet：Header、Tag、Buffer 和 RDMA 报文生命周期](/posts/ns3-packet-header-tag-buffer-rdma/)

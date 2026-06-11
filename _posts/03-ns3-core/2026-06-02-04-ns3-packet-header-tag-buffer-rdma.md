@@ -8,9 +8,10 @@ description: "从 Packet 的 Buffer、Header、Tag 和 Metadata 讲起，理解 
 ---
 
 <!-- series-nav -->
-> **系列位置**：ns-3 源码阅读，第 04 篇 / 共 4 篇
+> **系列位置**：ns-3 源码阅读，第 04 篇 / 共 5 篇
 > **总目录**：[学习路线](/roadmap/)
 > **上一篇**：[彻底理解 ns-3 事件系统：Simulator、EventId 和 RDMA 定时器](/posts/ns3-simulator-eventid-rdma-timers/)
+> **下一篇**：[彻底理解 ns-3 的 Tag：PacketTag、ByteTag 和 RDMA 仿真元信息](/posts/ns3-tag-packettag-bytetag-rdma/)
 
 
 前面几篇文章已经讲了：

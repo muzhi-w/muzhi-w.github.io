@@ -57,6 +57,7 @@ permalink: /roadmap/
 2. [彻底理解 ns-3 对象系统：Object、TypeId 和 Attribute](/posts/ns3-object-typeid-attribute/)
 3. [彻底理解 ns-3 事件系统：Simulator、EventId 和 RDMA 定时器](/posts/ns3-simulator-eventid-rdma-timers/)
 4. [彻底理解 ns-3 的 Packet：Header、Tag、Buffer 和 RDMA 报文生命周期](/posts/ns3-packet-header-tag-buffer-rdma/)
+5. [彻底理解 ns-3 的 Tag：PacketTag、ByteTag 和 RDMA 仿真元信息](/posts/ns3-tag-packettag-bytetag-rdma/)
 
 ## 4. RDMA / DCQCN 源码与模型
 

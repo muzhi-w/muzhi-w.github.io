@@ -218,9 +218,7 @@ ${workspaceFolder}
       "includePath": [
         "${workspaceFolder}/ns-3.19",
         "${workspaceFolder}/ns-3.19/build",
-        "${workspaceFolder}/ns-3.19/build/ns3",
-        "${workspaceFolder}/ns-3.19/src",
-        "${workspaceFolder}/ns-3.19/src/**"
+        "${workspaceFolder}/ns-3.19/src"
       ],
       "defines": [
         "NS3_ASSERT_ENABLE",
@@ -293,9 +291,7 @@ ${workspaceFolder}
       "includePath": [
         "${workspaceFolder}/ns3-new/ns-3.19",
         "${workspaceFolder}/ns3-new/ns-3.19/build",
-        "${workspaceFolder}/ns3-new/ns-3.19/build/ns3",
-        "${workspaceFolder}/ns3-new/ns-3.19/src",
-        "${workspaceFolder}/ns3-new/ns-3.19/src/**"
+        "${workspaceFolder}/ns3-new/ns-3.19/src"
       ],
       "defines": [
         "NS3_ASSERT_ENABLE",

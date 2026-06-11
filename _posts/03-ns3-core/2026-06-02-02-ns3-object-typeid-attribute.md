@@ -8,7 +8,7 @@ description: "从 ns-3 的 Object 基类讲起，理解 TypeId、GetTypeId、Att
 ---
 
 <!-- series-nav -->
-> **系列位置**：ns-3 源码阅读，第 02 篇 / 共 4 篇
+> **系列位置**：ns-3 源码阅读，第 02 篇 / 共 5 篇
 > **总目录**：[学习路线](/roadmap/)
 > **上一篇**：[彻底理解 ns-3 的 Ptr：从引用计数到 RDMA 对象生命周期](/posts/ns3-ptr-reference-count/)
 > **下一篇**：[彻底理解 ns-3 事件系统：Simulator、EventId 和 RDMA 定时器](/posts/ns3-simulator-eventid-rdma-timers/)
